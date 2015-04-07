@@ -24,7 +24,7 @@ public class UserServiceMock implements IUserService {
 
     @Override
     public ArrayList<User> searchUser(String searchedName, String searchedPhone) throws SQLException {
-        if (2%2==0)throw new SQLException("Test");
+//        if (2%2==0)throw new SQLException("Test");
         return null;
     }
 

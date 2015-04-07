@@ -6,10 +6,14 @@
     <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
          "http://www.w3.org/TR/html4/loose.dtd">
 
+         <%if (session.getAttribute("USER")==null){%>
+         <jsp:forward page="/Login.jsp"/>
+         <%}%>
+
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
     <title>Adding and Edition Users</title>
-    <link rel="stylesheet" type="text/css" href="assets/styles.css" />
+    <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/assets/styles.css" />
     <style>
     td {
         background-color: #CCCCCC;
@@ -18,7 +22,7 @@
 </head>
 <body>
 <%User user = (User)request.getAttribute("User");%>
-    <form method="POST" action='Edit' name="Add/Edit">
+    <form method="POST" action="<%=request.getContextPath()%>/actions/Edit" name="Add/Edit">
         <table >
             <tr >
                 <td class="labels">Nickname:</td>
@@ -82,13 +86,6 @@
             </tr>
             <tr>
             <td colspan="2" align="right">
-				<!--
-				<%if (request.getAttribute("LoggedUsername")!=null){%>
-				<input type="hidden" name="LoggedUsername" value=<%=request.getAttribute("LoggedUsername")%>>
-				<%}%>
-				-->
-                	<input type="hidden" name="snickname" value=<%=request.getAttribute("snickname")%>>
-                	<input type="hidden" name="sphone" value=<%=request.getAttribute("sphone")%>>
                 	<input type="hidden" name="btnSearch" value="aa">
                     <input type="submit"
                     name=<%=request.getAttribute("Edit")!= null?"btnEditUser":"btnAddUser"%>

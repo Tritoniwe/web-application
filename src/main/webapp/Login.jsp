@@ -7,7 +7,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Login and Registration</title>
-<link rel="stylesheet" type="text/css" href="assets/styles.css" />
+<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/assets/styles.css" />
 <style>
 td {
     background-color: #CCCCCC;
@@ -17,7 +17,7 @@ td {
 
 <body>
 	
-	<form method="POST" action='Login' name="login">
+	<form method="POST" action='<%=request.getContextPath()%>/Login' name="login">
 		<table >
 			<tr >
 				<td class="labels">Nickname:</td>

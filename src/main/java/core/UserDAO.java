@@ -79,7 +79,8 @@ public class UserDAO {
                     String email = result.getString("email");
                     String phone = result.getString("phone");
                     String address = result.getString("address");
-
+                    if (email == null) email = "";
+                    if (address == null) address = "";
                     userArrayList.add(new User(nickname, password, userRole, name, surname, sex, email, phone, address));
                 }
                 preparedStatement.close();
@@ -101,7 +102,6 @@ public class UserDAO {
                 user.name.isEmpty() || user.surname.isEmpty() || user.userRole.isEmpty()) {
             throw new IllegalArgumentException("User's nickname,password,phone,name,surname,role can't be empty");
         }
-        //if (user.sex==null) user.sex = null;
         if (user.address.isEmpty()) user.address = null;
         if (user.email.isEmpty()) user.email = null;
         try (Connection conn = new DataAccessLayer().getConnection()) {
@@ -170,7 +170,9 @@ public class UserDAO {
      * @throws SQLException
      */
     public User getUserData(String nickname) throws SQLException {
-        return searchUsers(nickname, "", true).get(0);
+        ArrayList<User> arrayList = searchUsers(nickname, "", true);
+        if (arrayList.isEmpty()) return null;
+        return arrayList.get(0);
     }
 
     /**

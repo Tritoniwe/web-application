@@ -22,10 +22,10 @@ public class ModifUserController extends DependencyInjectionServlet {
     @Inject("UserService")
     IUserService userService;
 
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        resp.sendRedirect(req.getContextPath()+"/Login.jsp");
-    }
+//    @Override
+//    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+//        resp.sendRedirect(req.getContextPath()+"/Login.jsp");
+//    }
 
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -34,13 +34,14 @@ public class ModifUserController extends DependencyInjectionServlet {
         boolean isAddingUser = parameters.containsKey("btnAddUser");
         boolean isEditingUser = parameters.containsKey("btnEditUser");
         boolean isBack = parameters.containsKey("btnBack");
-        boolean isLogged = request.getSession(true).getAttribute("USER")!=null;
+//        boolean isLogged = request.getSession(true).getAttribute("USER")!=null;
+        request.getSession(true).setAttribute("isReturning",true);
 
         //Redirect on login page if user don't pass authorization
-        if (!isLogged) {
-            request.setAttribute("Error", "You need to login first!");
-            request.getRequestDispatcher("/Login.jsp").forward(request, response);
-        }
+//        if (!isLogged) {
+//            request.setAttribute("Error", "You need to login first!");
+//            request.getRequestDispatcher("/Login.jsp").forward(request, response);
+//        }
 
         if (isAddingUser) {
             ArrayList<String> errorList = new ArrayList<>();
@@ -53,7 +54,11 @@ public class ModifUserController extends DependencyInjectionServlet {
             if (user.name.isEmpty()) errorList.add("Name");
             if (user.surname.isEmpty()) errorList.add("Surname");
             if (user.phone.isEmpty()) errorList.add("Phone");
-
+            try {
+                if (userService.getUserData(user.nickname)!=null) errorList.add("Such nickname is taken");
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
             // If all Ok process data to DB
             if (errorList.isEmpty()) {
                 try {
@@ -61,7 +66,7 @@ public class ModifUserController extends DependencyInjectionServlet {
                 } catch (SQLException e) {
                     showErrorPage(e.getMessage(), request, response);
                 }
-                request.getRequestDispatcher("/Search").forward(request, response);
+                request.getRequestDispatcher("Search").forward(request, response);
             } else {
                 // If all bad set attributes and redirect back on page with error string
                 request.setAttribute("User", user);
@@ -83,9 +88,11 @@ public class ModifUserController extends DependencyInjectionServlet {
             if (user.surname.isEmpty()) errorList.add("Surname");
             if (user.phone.isEmpty()) errorList.add("Phone");
 
+
             // If all Ok process data to DB
             if (errorList.isEmpty()) {
                 try {
+
                     userService.editUser(user);
                 } catch (SQLException e) {
                     showErrorPage(e.getMessage(), request, response);
@@ -97,11 +104,12 @@ public class ModifUserController extends DependencyInjectionServlet {
                 request.setAttribute("Edit", true);
                 request.getRequestDispatcher("/adduser.jsp").forward(request, response);
             }
-            request.getRequestDispatcher("/Search").forward(request, response);
+            request.getRequestDispatcher("Search").forward(request, response);
         }
 
         if (isBack){
-            request.getRequestDispatcher("/Search").forward(request, response);
+            System.out.println("----->"+request.getContextPath());
+            request.getRequestDispatcher("Search").forward(request, response);
         }
     }
 

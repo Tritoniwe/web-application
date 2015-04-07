@@ -9,6 +9,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.xml.bind.DataBindingException;
 import java.io.IOException;
 import java.sql.SQLException;
@@ -22,10 +23,10 @@ public class SearchController extends DependencyInjectionServlet {
     @Inject("UserService")
     IUserService userService;
 
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        resp.sendRedirect(req.getContextPath()+"/Login.jsp");
-    }
+//    @Override
+//    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+//        resp.sendRedirect(req.getContextPath() + "/Login.jsp");
+//    }
 
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -38,37 +39,47 @@ public class SearchController extends DependencyInjectionServlet {
         boolean isDeleting = parameters.containsKey("btnDelete");
 
 
-        boolean isLogged = request.getSession(true).getAttribute("USER")!=null;
-
+//        boolean isLogged = request.getSession(true).getAttribute("USER") != null;
 
 
         //Redirect on login page if user don't pass authorization
-        if (!isLogged) {
-            request.setAttribute("Error", "You need to login first!");
-            request.getRequestDispatcher("/Login.jsp").forward(request, response);
-        }
+//        if (!isLogged) {
+//            request.setAttribute("Error", "You need to login first!");
+//            request.getRequestDispatcher("/Login.jsp").forward(request, response);
+//        }
 
 
         // Actiong if search button pressed
         if (isSearching) {
+            String searchedNickname;
+            String searchedPhone;
+            HttpSession session = request.getSession(true);
+
             // setting list of searching users as attribute and redirecting to Search page
             try {
-                String searchedNickname= request.getParameter("snickname");
-                String searchedPhone= request.getParameter("sphone");
-                searchedNickname=searchedNickname.isEmpty()?"%":"%"+searchedNickname+"%";
-                searchedPhone= searchedPhone.isEmpty()?"%":"%"+searchedPhone+"%";
-                request.setAttribute("Model", userService.searchUser(searchedNickname,searchedPhone));
+                if (session.getAttribute("isReturning") == null) {
+                    searchedNickname = request.getParameter("snickname");
+                    searchedPhone = request.getParameter("sphone");
+                    session.setAttribute("snickname", searchedNickname);
+                    session.setAttribute("sphone", searchedPhone);
+                } else {
+                    searchedNickname = (String) session.getAttribute("snickname");
+                    searchedPhone = (String) session.getAttribute("sphone");
+                    session.setAttribute("isReturning",null);
+
+                }
+                searchedNickname = searchedNickname.isEmpty() ? "%" : "%" + searchedNickname + "%";
+                searchedPhone = searchedPhone.isEmpty() ? "%" : "%" + searchedPhone + "%";
+                request.setAttribute("Model", userService.searchUser(searchedNickname, searchedPhone));
+
+                request.getRequestDispatcher("/Search.jsp").forward(request, response);
             } catch (SQLException e) {
                 showErrorPage(e.getMessage(), request, response);
             }
-            request.setAttribute("snickname",request.getParameter("snickname"));
-            request.setAttribute("sphone",request.getParameter("sphone"));
-            request.getRequestDispatcher("/Search.jsp").forward(request, response);
+
         }
 
         if (isAdding) {
-            request.setAttribute("snickname",request.getParameter("snickname"));
-            request.setAttribute("sphone",request.getParameter("sphone"));
             request.getRequestDispatcher("/adduser.jsp").forward(request, response);
         }
 
@@ -90,10 +101,10 @@ public class SearchController extends DependencyInjectionServlet {
             } catch (SQLException e) {
                 showErrorPage(e.getMessage(), request, response);
             }
-            request.setAttribute("snickname",request.getParameter("snickname"));
-            request.setAttribute("sphone",request.getParameter("sphone"));
+
             request.getRequestDispatcher("/adduser.jsp").forward(request, response);
         }
+
 
     }
 

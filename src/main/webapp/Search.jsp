@@ -1,48 +1,39 @@
+<html>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
     <%@page import="core.User, java.util.*"%>
 
-    <!DOCTYPE html>
-
-<html>
+    <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+         "http://www.w3.org/TR/html4/loose.dtd">
+<%if (session.getAttribute("USER")==null){%>
+<jsp:forward page="/Login.jsp"/>
+<%}%>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Search</title>
-<link rel="stylesheet" type="text/css" href="assets/styles.css" />
+<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/assets/styles.css" />
 </head>
 <body>
 
 <table style = "border-color:white;">
     <tr>
-	<form method="POST" action='Search' name="search">
+	<form method="POST" action='<%=request.getContextPath()%>/actions/Search' name="search">
 
 				<td class="labels" style = "border-color:white;">Nickname:</td>
 				<td style = "border-color:white;"><input type="text" name="snickname"  style="width:120px;"
-				value=<%= request.getAttribute("snickname")!=null?request.getAttribute("snickname"):"" %>
+				value=<%= session.getAttribute("snickname")!=null?session.getAttribute("snickname"):"" %>
 				></td>
 				<td class="labels" style = "border-color:white;">PhoneNumber:</td>
 				<td style = "border-color:white;"><input type="text" name="sphone"  style="width:120px;"
-				value=<%= request.getAttribute("sphone")!=null?request.getAttribute("sphone"):"" %>
+				value=<%= session.getAttribute("sphone")!=null?session.getAttribute("sphone"):"" %>
 				></td>
 				<td align="center" style = "border-color:white;">
-				<!--
-				<%if (request.getAttribute("LoggedUsername")!=null){%>
-				<input type="hidden" name="LoggedUsername" value=<%=request.getAttribute("LoggedUsername")%>>
-				<%}%>
--->
 					<input type="submit" name="btnSearch" value="Search">
 				</td>
 
 	</form>
-	<form method="POST" action='Search' name "add">
+	<form method="POST" action='<%=request.getContextPath()%>/actions/Search' name "add">
 	<td style = "border-color:white;">
-	<!--
-				<%if (request.getAttribute("LoggedUsername")!=null){%>
-				<input type="hidden" name="LoggedUsername" value=<%=request.getAttribute("LoggedUsername")%>>
-				<%}%>
-		-->
-	<input type="hidden" name="snickname" value=<%=request.getAttribute("snickname")%>>
-	<input type="hidden" name="sphone" value=<%=request.getAttribute("sphone")%>>
 	<input type="submit" name="btnAdd" value="Add new User">
 	</td>
 	</form>
@@ -88,35 +79,23 @@
  </td>
 
   <td >
-    <form method="POST" action='Search' name="edit">
+    <form method="POST" action='<%=request.getContextPath()%>/actions/Search' name="edit">
     <input type="hidden" name="nickname" value=<%=user.nickname%>>
-    <!--
-				<%if (request.getAttribute("LoggedUsername")!=null){%>
-				<input type="hidden" name="LoggedUsername" value=<%=request.getAttribute("LoggedUsername")%>>
-				<%}%>
-				-->
-    	<input type="hidden" name="snickname" value=<%=request.getAttribute("snickname")%>>
-    	<input type="hidden" name="sphone" value=<%=request.getAttribute("sphone")%>>
     <input type="submit" name="btnEdit" value="Edit">
     </form>
   </td>
 
  <td >
-    <form method="POST" action='Search' name="delete">
+    <form method="POST" action='<%=request.getContextPath()%>/actions/Search' name="delete">
     <input type="hidden" name="nickname" value=<%=user.nickname%>>
-    <!--
-				<%if (request.getAttribute("LoggedUsername")!=null){%>
-				<input type="hidden" name="LoggedUsername" value=<%=request.getAttribute("LoggedUsername")%>>
-				<%}%>
-				-->
-    	<input type="hidden" name="snickname" value=<%=request.getAttribute("snickname")%>>
-    	<input type="hidden" name="sphone" value=<%=request.getAttribute("sphone")%>>
     <input type="submit" name="btnDelete" value="Delete">
     </form>
   </td>
 <%}}%>
 
-
+<form method="GET" action='<%=request.getContextPath()%>/Logout' name="Logout">
+<input type="submit" name="btnLogout" value="Logout">
+</form>
 
 </body>
 </html>

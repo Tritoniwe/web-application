@@ -9,14 +9,14 @@ http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd"
     <description>
         Test servlet
     </description>
-    <display-name>Test servlet </display-name>
+    <display-name>Test servlet</display-name>
 
 
     <context-param>
         <param-name>appContext</param-name>
         <param-value>/appContext.xml</param-value>
     </context-param>
-    
+
     <servlet>
         <display-name>LoginController</display-name>
         <servlet-name>LoginController</servlet-name>
@@ -32,7 +32,10 @@ http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd"
         <servlet-name>ModifUserController</servlet-name>
         <servlet-class>jsp.controller.ModifUserController</servlet-class>
     </servlet>
-
+    <servlet>
+        <servlet-name>LogoutController</servlet-name>
+        <servlet-class>jsp.controller.LogoutController</servlet-class>
+    </servlet>
 
 
     <servlet-mapping>
@@ -42,16 +45,26 @@ http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd"
 
     <servlet-mapping>
         <servlet-name>SearchController</servlet-name>
-        <url-pattern>/Search</url-pattern>
+        <url-pattern>/actions/Search</url-pattern>
     </servlet-mapping>
 
     <servlet-mapping>
         <servlet-name>ModifUserController</servlet-name>
-        <url-pattern>/Edit</url-pattern>
+        <url-pattern>/actions/Edit</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LogoutController</servlet-name>
+        <url-pattern>/Logout</url-pattern>
     </servlet-mapping>
 
 
-
-
+    <filter>
+        <filter-name>AuthorizationFilter</filter-name>
+        <filter-class>filters.AuthorizationFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>AuthorizationFilter</filter-name>
+        <url-pattern>/actions/*</url-pattern>
+    </filter-mapping>
 
 </web-app>

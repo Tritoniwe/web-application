@@ -1,0 +1,35 @@
+@CHARSET "UTF-8";
+
+
+table,td,th
+{
+    border-collapse: collapse;
+	border: 1px solid black;
+}
+
+table{
+background-color: white;
+}
+
+td,th
+{
+	padding: 10px;
+}
+
+th{
+background-color: #CCCCCC;
+}
+
+td.labels
+{
+	font-family: sans-serif;
+	font-size: 10;
+}
+
+text.errors{
+	color: #FF0000;
+}
+form.errors
+{
+	color: #FF0000;
+}

@@ -92,7 +92,7 @@
     </form>
   </td>
 <%}}%>
-
+</table>
 <form method="GET" action='<%=request.getContextPath()%>/Logout' name="Logout">
 <input type="submit" name="btnLogout" value="Logout">
 </form>

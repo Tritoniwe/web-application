@@ -1,13 +1,11 @@
 package jsp.controller;
 
-import SpringTest.DependencyInjectionServlet;
-import SpringTest.Inject;
-import core.UserService;
+import springtest.DependencyInjectionServlet;
+import springtest.Inject;
 import core.User;
 import interfaces.IUserService;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -108,7 +106,6 @@ public class ModifUserController extends DependencyInjectionServlet {
         }
 
         if (isBack){
-            System.out.println("----->"+request.getContextPath());
             request.getRequestDispatcher("Search").forward(request, response);
         }
     }

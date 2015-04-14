@@ -1,6 +1,7 @@
 package core;
 
 import exceptions.AuthorizationException;
+import interfaces.IUserDAO;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -11,9 +12,9 @@ import java.util.ArrayList;
 /**
  * Class which obtaining and processing information from DB
  */
-public class UserDAO {
+public class UserDAOImpl implements IUserDAO {
 
-    UserDAO() {
+    UserDAOImpl() {
 
     }
 
@@ -24,6 +25,7 @@ public class UserDAO {
      * @return null - if no such user in DB,  or User object with nickname, password and user role
      * @throws java.sql.SQLException
      */
+    @Override
     public User getLoginUser(String nickname) throws SQLException, AuthorizationException {
         try (Connection conn = new DataAccessLayer().getConnection()) {
 
@@ -47,6 +49,7 @@ public class UserDAO {
      * @return List of searched Users
      * @throws SQLException
      */
+    @Override
     public ArrayList<User> searchUsers(String searchedNickName, String searchedPhone, boolean forEditing) throws SQLException {
         ArrayList<User> userArrayList = new ArrayList<>();
         try (Connection conn = new DataAccessLayer().getConnection()) {
@@ -96,6 +99,7 @@ public class UserDAO {
      * @return - true if operation successful
      * @throws SQLException
      */
+    @Override
     public void addUser(User user) throws SQLException {
         if (user == null) throw new IllegalArgumentException("User argument must not be null");
         if (user.nickname.isEmpty() || user.password.isEmpty() || user.phone.isEmpty() ||
@@ -135,6 +139,7 @@ public class UserDAO {
      * @return - true if operation successful
      * @throws SQLException
      */
+    @Override
     public void changeUserData(User user) throws SQLException {
 
 
@@ -169,6 +174,7 @@ public class UserDAO {
      * @return - searched User
      * @throws SQLException
      */
+    @Override
     public User getUserData(String nickname) throws SQLException {
         ArrayList<User> arrayList = searchUsers(nickname, "", true);
         if (arrayList.isEmpty()) return null;
@@ -182,6 +188,7 @@ public class UserDAO {
      * @return - true if operation successful
      * @throws SQLException
      */
+    @Override
     public void deleteUser(String nickname) throws SQLException {
         try (Connection conn = new DataAccessLayer().getConnection()) {
             conn.setAutoCommit(false);

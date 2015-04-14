@@ -1,7 +1,7 @@
 package jsp.controller;
 
-import springtest.DependencyInjectionServlet;
-import springtest.Inject;
+import injection.DependencyInjectionServlet;
+import injection.Inject;
 import core.User;
 import interfaces.IUserService;
 

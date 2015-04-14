@@ -1,10 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
- http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+ http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
 
 
-<bean id = "UserService" class="core.UserService" scope="singleton"/>
+    <bean id="UserService" class="core.UserService" scope="singleton">
+        <property name="iUserDAO" ref="UserDAO"/>
+    </bean>
 
+    <bean id="UserDAO" class="core.UserDAOImpl" scope="singleton"/>
+
+    <bean id="UserCache" class="aspects.UsersCache" scope="singleton"/>
+
+<aop:config>
+    <aop:aspect ref="UserCache">
+        <aop:pointcut id="searchUsers" expression="execution(* core.UserDAOImpl.*(..))"/>
+        <aop:around pointcut-ref="searchUsers" method="checkCache" />
+    </aop:aspect>
+</aop:config>
 </beans>

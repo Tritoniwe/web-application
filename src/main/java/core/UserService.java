@@ -2,6 +2,7 @@ package core;
 
 import exceptions.AuthorizationException;
 import interfaces.IUserService;
+import interfaces.IUserDAO;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -11,11 +12,11 @@ import java.util.ArrayList;
  */
 public class UserService implements IUserService {
 
-    UserDAO userDAO;
+    IUserDAO iUserDAO;
 
     public UserService(){
 
-        userDAO=new UserDAO();
+        iUserDAO =new UserDAOImpl();
 
     }
 
@@ -31,7 +32,7 @@ public class UserService implements IUserService {
                 new IllegalArgumentException("The nickname argument to the setUserStatus method may not be null.");
         if (passwd == null) throw
                 new IllegalArgumentException("The passwd argument to the setUserStatus method may not be null.");
-        User user = userDAO.getLoginUser(nickname);
+        User user = iUserDAO.getLoginUser(nickname);
 
         if (user==null) throw new AuthorizationException("No such User in DataBase");
         if (!user.password.equals(passwd)) throw new AuthorizationException("Wrong password.");
@@ -45,7 +46,7 @@ public class UserService implements IUserService {
      * @throws SQLException
      */
     public void addUser(User user)throws SQLException{
-        userDAO.addUser(user);
+        iUserDAO.addUser(user);
     }
 
     /**
@@ -56,7 +57,7 @@ public class UserService implements IUserService {
      * @throws SQLException
      */
     public ArrayList<User> searchUser(String searchedName,String searchedPhone)throws SQLException{
-        return userDAO.searchUsers(searchedName, searchedPhone, false);
+        return iUserDAO.searchUsers(searchedName, searchedPhone, false);
     }
 
     /**
@@ -65,7 +66,7 @@ public class UserService implements IUserService {
      * @throws SQLException
      */
     public  void deleteUser(String nickname) throws SQLException {
-        userDAO.deleteUser(nickname);
+        iUserDAO.deleteUser(nickname);
     }
 
     /**
@@ -74,7 +75,7 @@ public class UserService implements IUserService {
      * @throws SQLException
      */
     public void editUser(User user) throws SQLException {
-        userDAO.changeUserData(user);
+        iUserDAO.changeUserData(user);
     }
 
     /**
@@ -84,8 +85,11 @@ public class UserService implements IUserService {
      * @throws SQLException
      */
     public User getUserData(String nickname) throws SQLException {
-        return userDAO.getUserData(nickname);
+        return iUserDAO.getUserData(nickname);
     }
 
 
+    public void setiUserDAO(IUserDAO iUserDAO) {
+        this.iUserDAO = iUserDAO;
+    }
 }

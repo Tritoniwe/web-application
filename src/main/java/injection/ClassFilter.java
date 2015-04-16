@@ -10,25 +10,24 @@ import java.util.List;
  */
 public class ClassFilter {
 
-    public static List<Field> collectFields(Class <?> clazz, Class<?> upperBound){
-        ArrayList <Field> result = new ArrayList<>();
+    public static List<Field> collectFields(Class<?> clazz, Class<?> upperBound) {
+        ArrayList<Field> result = new ArrayList<>();
         Class<?> current = clazz;
-        while (current!=upperBound){
+        while (current != upperBound) {
             result.addAll(Arrays.asList(current.getDeclaredFields()));
-            current=current.getSuperclass();
+            current = current.getSuperclass();
         }
 
         return result;
     }
 
 
+    public static List<Field> filterInjection(List<Field> allFields) {
+        ArrayList<Field> result = new ArrayList<>();
 
-    public static List<Field> filterInjection(List<Field> allFields){
-        ArrayList <Field> result = new ArrayList<>();
-
-        for (Field field : allFields){
+        for (Field field : allFields) {
             Inject annotation = field.getAnnotation(Inject.class);
-            if(annotation!= null){
+            if (annotation != null) {
                 result.add(field);
             }
         }

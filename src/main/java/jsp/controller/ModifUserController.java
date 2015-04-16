@@ -33,7 +33,7 @@ public class ModifUserController extends DependencyInjectionServlet {
         boolean isEditingUser = parameters.containsKey("btnEditUser");
         boolean isBack = parameters.containsKey("btnBack");
 //        boolean isLogged = request.getSession(true).getAttribute("USER")!=null;
-        request.getSession(true).setAttribute("isReturning",true);
+        request.getSession(true).setAttribute("isReturning", true);
 
         //Redirect on login page if user don't pass authorization
 //        if (!isLogged) {
@@ -53,7 +53,7 @@ public class ModifUserController extends DependencyInjectionServlet {
             if (user.surname.isEmpty()) errorList.add("Surname");
             if (user.phone.isEmpty()) errorList.add("Phone");
             try {
-                if (userService.getUserData(user.nickname)!=null) errorList.add("Such nickname is taken");
+                if (userService.getUserData(user.nickname) != null) errorList.add("Such nickname is taken");
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -105,7 +105,7 @@ public class ModifUserController extends DependencyInjectionServlet {
             request.getRequestDispatcher("Search").forward(request, response);
         }
 
-        if (isBack){
+        if (isBack) {
             request.getRequestDispatcher("Search").forward(request, response);
         }
     }
@@ -113,6 +113,7 @@ public class ModifUserController extends DependencyInjectionServlet {
 
     /**
      * Method for filling all user data from request -> object User
+     *
      * @param request
      * @return
      */

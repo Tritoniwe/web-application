@@ -12,7 +12,6 @@ import java.util.ArrayList;
 public class UserServiceMock implements IUserService {
 
 
-
     @Override
     public void login(String nickname, String password) throws SQLException, AuthorizationException {
     }

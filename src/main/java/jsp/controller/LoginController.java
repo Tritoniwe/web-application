@@ -21,7 +21,7 @@ public class LoginController extends DependencyInjectionServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        resp.sendRedirect(req.getContextPath()+"/Login.jsp");
+        resp.sendRedirect(req.getContextPath() + "/Login.jsp");
     }
 
     @Override
@@ -39,10 +39,10 @@ public class LoginController extends DependencyInjectionServlet {
 
         //authorization of user
         try {
-           userService.login(nickname, password);
+            userService.login(nickname, password);
             request.setAttribute("LoggedUsername", nickname);
             HttpSession session = request.getSession(true);
-            session.setAttribute("USER",nickname);
+            session.setAttribute("USER", nickname);
             request.getRequestDispatcher("/Search.jsp").forward(request, response);
         } catch (SQLException e) {
             request.setAttribute("Error", e.getMessage());

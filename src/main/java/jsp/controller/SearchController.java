@@ -62,7 +62,7 @@ public class SearchController extends DependencyInjectionServlet {
                 } else {
                     searchedNickname = (String) session.getAttribute("snickname");
                     searchedPhone = (String) session.getAttribute("sphone");
-                    session.setAttribute("isReturning",null);
+                    session.setAttribute("isReturning", null);
 
                 }
                 searchedNickname = searchedNickname.isEmpty() ? "%" : "%" + searchedNickname + "%";

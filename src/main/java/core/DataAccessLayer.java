@@ -1,7 +1,9 @@
 package core;
 
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.Properties;
 
 
@@ -9,6 +11,7 @@ public class DataAccessLayer {
 
     /**
      * Method which makes connection to PostgreSQL DB
+     *
      * @return Connection to DB
      * @throws SQLException
      */

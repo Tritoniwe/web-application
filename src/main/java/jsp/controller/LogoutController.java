@@ -12,15 +12,15 @@ import java.io.IOException;
 /**
  * Class for processing requests from
  */
-public class LogoutController extends HttpServlet{
+public class LogoutController extends HttpServlet {
 
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession(true);
-       session.invalidate();
-        resp.sendRedirect(req.getContextPath()+"/Login.jsp");
+        session.invalidate();
+        resp.sendRedirect(req.getContextPath() + "/Login.jsp");
     }
 
-    }
+}
 

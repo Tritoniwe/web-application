@@ -21,9 +21,14 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
     <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
           destroy-method="close">
         <property name="driverClassName" value="org.postgresql.Driver"/>
+        <!--
         <property name="url" value="jdbc:postgresql://localhost/UsersDB"/>
         <property name="username" value="admin"/>
-        <property name="password" value="admin"/>
+        <property name="password" value="admin"/>-->
+
+<property name="url" value="jdbc:postgresql://ec2-54-163-225-82.compute-1.amazonaws.com:5432/d6rg00lf63i4ce"/>
+<property name="username" value="qgeiatnyxeawlo"/>
+<property name="password" value="dp68ohk7wQ4tPDasgsCobvlfwY"/>
 
     </bean>
 

@@ -2,23 +2,59 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:p="http://www.springframework.org/schema/p"
+
        xsi:schemaLocation="http://www.springframework.org/schema/beans
  http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
-http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
+http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+  http://www.springframework.org/schema/context
+  http://www.springframework.org/schema/context/spring-context-3.0.xsd
+  http://www.springframework.org/schema/tx
+  http://www.springframework.org/schema/tx/spring-tx.xsd
+">
 
+    <tx:annotation-driven/>
+    <context:component-scan base-package="core"/>
 
-    <bean id="UserService" class="core.UserService" scope="singleton">
-        <property name="iUserDAO" ref="UserDAO"/>
+    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
+          destroy-method="close">
+        <property name="driverClassName" value="org.postgresql.Driver"/>
+        <property name="url" value="jdbc:postgresql://localhost/UsersDB"/>
+        <property name="username" value="admin"/>
+        <property name="password" value="admin"/>
+
     </bean>
 
+
+    <bean id="entityManagerFactory"
+          class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+        <property name="persistenceUnitName" value="testPU"/>
+        <property name="dataSource" ref="dataSource"/>
+
+    </bean>
+
+    <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+        <property name="entityManagerFactory" ref="entityManagerFactory"/>
+        
+    </bean>
+
+
+    <bean id="UserService" class="core.UserServiceSpring" scope="singleton">
+        <!-- <property name="iUserDAO" ref="UserDAO"/>-->
+    </bean>
+<!--
     <bean id="UserDAO" class="core.UserDAOImpl" scope="singleton"/>
 
     <bean id="UserCache" class="aspects.UsersCache" scope="singleton"/>
 
-<aop:config>
-    <aop:aspect ref="UserCache">
-        <aop:pointcut id="searchUsers" expression="execution(* core.UserDAOImpl.*(..))"/>
-        <aop:around pointcut-ref="searchUsers" method="checkCache" />
-    </aop:aspect>
-</aop:config>
+    <aop:config>
+        <aop:aspect ref="UserCache">
+            <aop:pointcut id="searchUsers" expression="execution(* core.UserDAOImpl.*(..))"/>
+            <aop:around pointcut-ref="searchUsers" method="checkCache"/>
+        </aop:aspect>
+    </aop:config>
+
+    -->
 </beans>

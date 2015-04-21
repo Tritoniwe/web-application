@@ -1,5 +1,6 @@
 package jsp.controller;
 
+import core.User;
 import injection.DependencyInjectionServlet;
 import injection.Inject;
 import interfaces.IUserService;
@@ -94,7 +95,10 @@ public class SearchController extends DependencyInjectionServlet {
         if (isEditing) {
             request.setAttribute("Edit", true);
             try {
-                request.setAttribute("User", userService.getUserData(request.getParameter("nickname")));
+                User user= userService.getUserData(request.getParameter("nickname"));
+                HttpSession session = request.getSession(true);
+                session.setAttribute("originalUser", user);
+                request.setAttribute("User", user);
             } catch (SQLException e) {
                 showErrorPage(e.getMessage(), request, response);
             }

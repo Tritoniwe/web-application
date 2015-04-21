@@ -8,6 +8,7 @@ import interfaces.IUserService;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -90,8 +91,10 @@ public class ModifUserController extends DependencyInjectionServlet {
             // If all Ok process data to DB
             if (errorList.isEmpty()) {
                 try {
-
-                    userService.editUser(user);
+                    HttpSession session = request.getSession(true);
+                    User originalUser = (User)session.getAttribute("originalUser");
+                    originalUser.changeInformation(user);
+                    userService.editUser(originalUser);
                 } catch (SQLException e) {
                     showErrorPage(e.getMessage(), request, response);
                 }
